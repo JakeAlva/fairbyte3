@@ -100,35 +100,20 @@
       border:1px solid rgba(255,255,255,.12); position:relative;
       box-shadow:0 20px 60px -20px rgba(0,0,0,.5);
     }
-    .phone:before{ /* notch */
-      content:""; position:absolute; top:10px; left:50%; transform:translateX(-50%);
-      width:110px; height:18px; border-radius:10px; background:rgba(255,255,255,.16);
-    }
-    .screen{
-      position:absolute; inset:40px 14px 18px; border-radius:22px; overflow:hidden;
-      background:linear-gradient(180deg,#0e1e3b,#1e4291 40%,#2e6ad6); border:1px solid rgba(255,255,255,.12);
-    }
-    .list{
-      position:absolute; inset:0; padding:14px; display:flex; flex-direction:column; gap:12px;
-      animation:autoScroll 8s linear infinite;
-    }
-    .item{
-      height:56px; border-radius:16px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.12);
-    }
-    @keyframes autoScroll{
-      0%{ transform:translateY(0) }
-      90%{ transform:translateY(-50%) }
-      100%{ transform:translateY(-50%) }
-    }
+    .phone:before{ content:""; position:absolute; top:10px; left:50%; transform:translateX(-50%); width:110px; height:18px; border-radius:10px; background:rgba(255,255,255,.16); }
+    .screen{ position:absolute; inset:40px 14px 18px; border-radius:22px; overflow:hidden; background:linear-gradient(180deg,#0e1e3b,#1e4291 40%,#2e6ad6); border:1px solid rgba(255,255,255,.12); }
+    .list{ position:absolute; inset:0; padding:14px; display:flex; flex-direction:column; gap:12px; animation:autoScroll 8s linear infinite; }
+    .item{ height:56px; border-radius:16px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.12); }
+    @keyframes autoScroll{ 0%{ transform:translateY(0) } 90%{ transform:translateY(-50%) } 100%{ transform:translateY(-50%) } }
 
-    /* ---------- Top scroll progress bar ---------- */
+    /* ---------- Top scroll progress bar (mobile-robust) ---------- */
     #progress{ position:fixed; top:0; left:0; right:0; height:3px; z-index:60; pointer-events:none; }
     #progress .bar{
-      height:100%; width:100%;
-      transform:scaleX(0); transform-origin:0 50%;
+      height:100%; width:0%;
       background:linear-gradient(90deg,#2e6ad6,#60a5fa);
       box-shadow:0 0 8px rgba(46,106,214,.35);
-      transition:transform .08s linear;
+      will-change: width;
+      transition: width .05s linear;
     }
     .dark #progress .bar{ box-shadow:0 0 8px rgba(96,165,250,.35); }
   </style>
@@ -479,10 +464,10 @@
     ioContact.observe(contactSec);
 
     function computeShow(){
-      const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-      const scrollable = docH - window.innerHeight;
-      const halfway = scrollable * 0.5;
-      const pastHalf = window.scrollY > halfway;
+      const el = document.scrollingElement || document.documentElement;
+      const viewport = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight || document.documentElement.clientHeight;
+      const scrollable = Math.max(0, el.scrollHeight - viewport);
+      const pastHalf = el.scrollTop > scrollable * 0.5;
       return pastHalf && !contactInView;
     }
 
@@ -499,28 +484,43 @@
     }
     window.addEventListener('scroll', rafToggle, { passive:true });
     window.addEventListener('resize', rafToggle);
+    window.addEventListener('orientationchange', rafToggle);
+    if (window.visualViewport){
+      visualViewport.addEventListener('resize', rafToggle);
+      visualViewport.addEventListener('scroll', rafToggle);
+    }
     rafToggle(); // initial
 
-    // -------- Top scroll progress bar
+    // -------- Top scroll progress bar (mobile-robust)
     const progressBar = document.querySelector('#progress .bar');
-    let rafPB = null;
+    const scroller = document.scrollingElement || document.documentElement;
+
+    function getViewportHeight(){
+      return (window.visualViewport && window.visualViewport.height)
+        ? window.visualViewport.height
+        : window.innerHeight || document.documentElement.clientHeight;
+    }
+
     function updateProgress(){
-      const doc = document.documentElement;
-      const body = document.body;
-      const scrollTop = window.scrollY || doc.scrollTop;
-      const scrollHeight = Math.max(doc.scrollHeight, body.scrollHeight);
-      const max = scrollHeight - window.innerHeight;
-      const p = max > 0 ? Math.min(1, Math.max(0, scrollTop / max)) : 0;
-      progressBar.style.transform = `scaleX(${p})`;
-      rafPB = null;
+      const max = Math.max(0, (scroller.scrollHeight || document.body.scrollHeight) - getViewportHeight());
+      const p = max > 0 ? Math.min(1, Math.max(0, scroller.scrollTop / max)) : 0;
+      progressBar.style.width = (p * 100) + '%';
     }
-    function onScrollPB(){
+
+    let rafPB = null;
+    function queuePB(){
       if(rafPB) return;
-      rafPB = requestAnimationFrame(updateProgress);
+      rafPB = requestAnimationFrame(()=>{ updateProgress(); rafPB = null; });
     }
-    window.addEventListener('scroll', onScrollPB, { passive:true });
-    window.addEventListener('resize', onScrollPB);
-    updateProgress(); // initial
+
+    window.addEventListener('scroll', queuePB, { passive:true });
+    window.addEventListener('resize', queuePB);
+    window.addEventListener('orientationchange', queuePB);
+    if (window.visualViewport){
+      visualViewport.addEventListener('resize', queuePB);
+      visualViewport.addEventListener('scroll', queuePB);
+    }
+    updateProgress(); // initial paint
   </script>
 </body>
 </html>
