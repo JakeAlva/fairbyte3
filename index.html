@@ -43,6 +43,13 @@
     .dark .glass{background:linear-gradient(180deg,rgba(17,24,39,0.8),rgba(17,24,39,0.5))}
     .mask-fade{-webkit-mask-image:linear-gradient(to bottom,black 70%,transparent);mask-image:linear-gradient(to bottom,black 70%,transparent)}
 
+    /* ---------- Scroll reveal ---------- */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
+    @media (prefers-reduced-motion: reduce){
+      .reveal{opacity:1;transform:none;transition:none}
+    }
+
     /* ---------- Fancy work card effects ---------- */
     .fx-animated-bg{
       background: linear-gradient(135deg,#0e1e3b 0%,#1e4291 40%,#2e6ad6 60%,#60a5fa 100%);
@@ -113,12 +120,26 @@
       90%{ transform:translateY(-50%) }
       100%{ transform:translateY(-50%) }
     }
+
+    /* ---------- Top scroll progress bar ---------- */
+    #progress{ position:fixed; top:0; left:0; right:0; height:3px; z-index:60; pointer-events:none; }
+    #progress .bar{
+      height:100%; width:100%;
+      transform:scaleX(0); transform-origin:0 50%;
+      background:linear-gradient(90deg,#2e6ad6,#60a5fa);
+      box-shadow:0 0 8px rgba(46,106,214,.35);
+      transition:transform .08s linear;
+    }
+    .dark #progress .bar{ box-shadow:0 0 8px rgba(96,165,250,.35); }
   </style>
 </head>
 
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased">
+  <!-- Top scroll progress -->
+  <div id="progress" aria-hidden="true"><div class="bar"></div></div>
+
   <!-- Navigation -->
-  <header class="fixed inset-x-0 top-0 z-50">
+  <header class="fixed inset-x-0 top-0 z-50 reveal">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <nav class="mt-4 flex items-center justify-between rounded-2xl glass px-4 py-3 shadow-lg ring-1 ring-black/5 dark:ring-white/10">
         <a href="#" class="flex items-center gap-3">
@@ -149,7 +170,7 @@
 
     <div class="mx-auto max-w-7xl px-6">
       <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-        <div>
+        <div class="reveal">
           <div class="inline-flex items-center gap-2 rounded-full border border-slate-200/60 px-3 py-1 text-xs font-semibold text-slate-600 dark:border-slate-800/80 dark:text-slate-300 mb-4">
             <span class="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
             Now booking October builds
@@ -184,7 +205,7 @@
         </div>
 
         <!-- Right visual -->
-        <div class="relative">
+        <div class="relative reveal" style="transition-delay:.12s">
           <div class="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-brand-600/20 to-sky-400/10 blur-2xl"></div>
           <div class="relative rounded-3xl border border-slate-200/60 bg-white/70 p-2 shadow-2xl dark:border-slate-800/80 dark:bg-slate-900/70">
             <div class="rounded-2xl bg-slate-900 p-6 text-white">
@@ -217,7 +238,7 @@
   <!-- Work -->
   <section id="work" class="relative py-24 sm:py-28">
     <div class="mx-auto max-w-7xl px-6">
-      <div class="mb-12 flex items-end justify-between">
+      <div class="mb-12 flex items-end justify-between reveal">
         <div>
           <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Selected work</h2>
           <p class="mt-2 text-slate-600 dark:text-slate-300">A showcase of components and interactions we can ship quickly.</p>
@@ -226,8 +247,8 @@
       </div>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Project Card 1: Animated analytics -->
-        <article class="fx-card group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-50 to-white p-5 shadow-lg dark:border-slate-800/80 dark:from-slate-900 dark:to-slate-950" aria-label="Realtime Analytics">
+        <!-- Project Card 1 -->
+        <article class="reveal fx-card group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-50 to-white p-5 shadow-lg dark:border-slate-800/80 dark:from-slate-900 dark:to-slate-950">
           <div class="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mask-fade">
             <div class="h-full w-full bg-gradient-to-tr from-brand-600/30 via-sky-400/20 to-indigo-500/20"></div>
           </div>
@@ -263,8 +284,8 @@
           </div>
         </article>
 
-        <!-- Project Card 2: Animated product grid + CTA -->
-        <article class="fx-card group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-50 to-white p-5 shadow-lg dark:border-slate-800/80 dark:from-slate-900 dark:to-slate-950" aria-label="Headless Storefront">
+        <!-- Project Card 2 -->
+        <article class="reveal fx-card group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-50 to-white p-5 shadow-lg dark:border-slate-800/80 dark:from-slate-900 dark:to-slate-950" style="transition-delay:.07s">
           <div class="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mask-fade">
             <div class="h-full w-full bg-gradient-to-tr from-brand-600/30 via-sky-400/20 to-indigo-500/20"></div>
           </div>
@@ -285,8 +306,8 @@
           </div>
         </article>
 
-        <!-- Project Card 3: Phone mock with auto-scrolling list -->
-        <article class="fx-card group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-50 to-white p-5 shadow-lg dark:border-slate-800/80 dark:from-slate-900 dark:to-slate-950" aria-label="iOS/Android App">
+        <!-- Project Card 3 -->
+        <article class="reveal fx-card group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-50 to-white p-5 shadow-lg dark:border-slate-800/80 dark:from-slate-900 dark:to-slate-950" style="transition-delay:.14s">
           <div class="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mask-fade">
             <div class="h-full w-full bg-gradient-to-tr from-brand-600/30 via-sky-400/20 to-indigo-500/20"></div>
           </div>
@@ -317,34 +338,16 @@
   <section id="services" class="relative bg-slate-50 py-24 dark:bg-slate-950">
     <div class="absolute inset-x-0 -top-12 -z-10 h-24 bg-gradient-to-b from-transparent to-slate-50 dark:to-slate-950"></div>
     <div class="mx-auto max-w-7xl px-6">
-      <h2 class="text-2xl sm:text-3xl font-extrabold">What we do</h2>
-      <p class="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">From idea to launch—design, develop, deploy. Transparent scopes and fixed timelines.</p>
+      <h2 class="reveal text-2xl sm:text-3xl font-extrabold">What we do</h2>
+      <p class="reveal mt-2 max-w-2xl text-slate-600 dark:text-slate-300">From idea to launch—design, develop, deploy. Transparent scopes and fixed timelines.</p>
 
       <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div class="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
-          <div class="text-sm font-semibold text-brand-600">Web Apps</div>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Next.js, SSR/SSG, auth, dashboards, subscriptions, admin tools.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
-          <div class="text-sm font-semibold text-brand-600">Mobile</div>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">React Native, offline-first, native modules, App Store/Play deploys.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
-          <div class="text-sm font-semibold text-brand-600">E-commerce</div>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Stripe flows, tax/shipping, product variants, headless CMS.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
-          <div class="text-sm font-semibold text-brand-600">Brand & UI</div>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Design systems, accessibility, high-polish micro-interactions.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
-          <div class="text-sm font-semibold text-brand-600">APIs & Data</div>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Node/Go, Postgres, caching, background jobs, analytics.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
-          <div class="text-sm font-semibold text-brand-600">DevOps</div>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">CI/CD, monitoring, zero-downtime deploys, edge/CDN.</p>
-        </div>
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900"> <div class="text-sm font-semibold text-brand-600">Web Apps</div><p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Next.js, SSR/SSG, auth, dashboards, subscriptions, admin tools.</p></div>
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900" style="transition-delay:.06s"> <div class="text-sm font-semibold text-brand-600">Mobile</div><p class="mt-2 text-sm text-slate-600 dark:text-slate-300">React Native, offline-first, native modules, App Store/Play deploys.</p></div>
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900" style="transition-delay:.12s"> <div class="text-sm font-semibold text-brand-600">E-commerce</div><p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Stripe flows, tax/shipping, product variants, headless CMS.</p></div>
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900"> <div class="text-sm font-semibold text-brand-600">Brand & UI</div><p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Design systems, accessibility, high-polish micro-interactions.</p></div>
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900" style="transition-delay:.06s"> <div class="text-sm font-semibold text-brand-600">APIs & Data</div><p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Node/Go, Postgres, caching, background jobs, analytics.</p></div>
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900" style="transition-delay:.12s"> <div class="text-sm font-semibold text-brand-600">DevOps</div><p class="mt-2 text-sm text-slate-600 dark:text-slate-300">CI/CD, monitoring, zero-downtime deploys, edge/CDN.</p></div>
       </div>
     </div>
   </section>
@@ -352,12 +355,12 @@
   <!-- Process -->
   <section id="process" class="py-24">
     <div class="mx-auto max-w-7xl px-6">
-      <h2 class="text-2xl sm:text-3xl font-extrabold">A clear, fast process</h2>
+      <h2 class="reveal text-2xl sm:text-3xl font-extrabold">A clear, fast process</h2>
       <ol class="mt-8 space-y-6">
-        <li class="rounded-2xl border border-slate-200/60 p-6 dark:border-slate-800/80"><span class="font-bold">1. Scope & Estimate</span> — 48-hour turnaround with transparent deliverables.</li>
-        <li class="rounded-2xl border border-slate-200/60 p-6 dark:border-slate-800/80"><span class="font-bold">2. Design & Prototype</span> — interactive Figma and clickable demos.</li>
-        <li class="rounded-2xl border border-slate-200/60 p-6 dark:border-slate-800/80"><span class="font-bold">3. Build & Iterate</span> — weekly drops, issue tracking, staged rollouts.</li>
-        <li class="rounded-2xl border border-slate-200/60 p-6 dark:border-slate-800/80"><span class="font-bold">4. Launch & Support</span> — deploy, monitor, and improve with data.</li>
+        <li class="reveal rounded-2xl border border-slate-200/60 p-6 dark:border-slate-800/80"><span class="font-bold">1. Scope & Estimate</span> — 48-hour turnaround with transparent deliverables.</li>
+        <li class="reveal rounded-2xl border border-slate-200/60 p-6 dark:border-slate-800/80" style="transition-delay:.06s"><span class="font-bold">2. Design & Prototype</span> — interactive Figma and clickable demos.</li>
+        <li class="reveal rounded-2xl border border-slate-200/60 p-6 dark:border-slate-800/80" style="transition-delay:.12s"><span class="font-bold">3. Build & Iterate</span> — weekly drops, issue tracking, staged rollouts.</li>
+        <li class="reveal rounded-2xl border border-slate-200/60 p-6 dark:border-slate-800/80" style="transition-delay:.18s"><span class="font-bold">4. Launch & Support</span> — deploy, monitor, and improve with data.</li>
       </ol>
     </div>
   </section>
@@ -365,32 +368,32 @@
   <!-- Pricing -->
   <section id="pricing" class="relative py-24 bg-slate-50 dark:bg-slate-950">
     <div class="mx-auto max-w-7xl px-6">
-      <h2 class="text-2xl sm:text-3xl font-extrabold">Simple, honest pricing</h2>
+      <h2 class="reveal text-2xl sm:text-3xl font-extrabold">Simple, honest pricing</h2>
       <div class="mt-8 grid gap-6 md:grid-cols-3">
-        <div class="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
           <div class="text-sm font-semibold text-brand-600">Starter</div>
           <div class="mt-3 text-3xl font-black">$2k–$5k</div>
           <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Landing pages & marketing sites.</p>
         </div>
-        <div class="rounded-2xl border border-brand-600 bg-gradient-to-b from-white to-brand-50 p-6 shadow-glow dark:from-slate-900 dark:to-slate-900/40">
+        <div class="reveal rounded-2xl border border-brand-600 bg-gradient-to-b from-white to-brand-50 p-6 shadow-glow dark:from-slate-900 dark:to-slate-900/40" style="transition-delay:.08s">
           <div class="text-sm font-semibold text-brand-600">Growth</div>
           <div class="mt-3 text-3xl font-black">$8k–$20k</div>
           <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Web apps, dashboards, subscriptions.</p>
         </div>
-        <div class="rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900" style="transition-delay:.16s">
           <div class="text-sm font-semibold text-brand-600">Scale</div>
           <div class="mt-3 text-3xl font-black">Custom</div>
           <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Mobile, complex systems, integrations.</p>
         </div>
       </div>
-      <p class="mt-6 text-sm text-slate-500">Need something specific? We’ll scope it fast and fairly.</p>
+      <p class="reveal mt-6 text-sm text-slate-500">Need something specific? We’ll scope it fast and fairly.</p>
     </div>
   </section>
 
   <!-- Contact (Netlify Forms) -->
   <section id="contact" class="py-24">
     <div class="mx-auto max-w-4xl px-6">
-      <div class="rounded-2xl border border-slate-200/60 p-8 shadow-lg dark:border-slate-800/80">
+      <div class="reveal rounded-2xl border border-slate-200/60 p-8 shadow-lg dark:border-slate-800/80">
         <div class="flex items-center gap-3">
           <img src="logo.png" class="h-8 w-8 rounded-lg" alt="Fairbyte"/>
           <h2 class="text-2xl font-extrabold">Tell us about your project</h2>
@@ -426,6 +429,14 @@
     </div>
   </footer>
 
+  <!-- Sticky mobile CTA -->
+  <div id="stickyCta" class="md:hidden fixed bottom-3 inset-x-3 z-50 transform translate-y-full opacity-0 pointer-events-none transition-all duration-300">
+    <div class="rounded-2xl shadow-xl ring-1 ring-black/5 bg-white text-slate-900 dark:bg-slate-900 dark:text-white dark:ring-white/10 px-4 py-3 flex items-center justify-between gap-3">
+      <div class="text-sm font-semibold">Ready to start?</div>
+      <a href="#contact" class="rounded-xl bg-brand-600 text-white px-4 py-2 text-sm font-semibold">Start a project</a>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script>
     // Theme toggle
@@ -447,6 +458,70 @@
       for(let i=0;i<dots.length;i++){ for(let j=i+1;j<dots.length;j++){ const a=dots[i], b=dots[j]; const dx=a.x-b.x, dy=a.y-b.y; const dist=Math.hypot(dx,dy); if(dist<linkDist){ ctx.strokeStyle='rgba(46,106,214,'+(1-dist/linkDist)*0.25+')'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); } } }
       requestAnimationFrame(tick);
     })();
+
+    // -------- Scroll reveal (IntersectionObserver)
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries)=>{
+      for(const e of entries){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      }
+    }, { threshold: .12, rootMargin: "0px 0px -10% 0px" });
+    revealEls.forEach(el=> io.observe(el));
+
+    // -------- Sticky mobile CTA (shows after 50% scroll, hides when #contact visible)
+    const sticky = document.getElementById('stickyCta');
+    let contactInView = false;
+    const contactSec = document.getElementById('contact');
+    const ioContact = new IntersectionObserver((entries)=>{
+      contactInView = entries[0].isIntersecting;
+      rafToggle();
+    }, { threshold: .2 });
+    ioContact.observe(contactSec);
+
+    function computeShow(){
+      const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      const scrollable = docH - window.innerHeight;
+      const halfway = scrollable * 0.5;
+      const pastHalf = window.scrollY > halfway;
+      return pastHalf && !contactInView;
+    }
+
+    let raf = null;
+    function rafToggle(){
+      if(raf) return;
+      raf = requestAnimationFrame(()=>{
+        const show = computeShow();
+        sticky.classList.toggle('translate-y-full', !show);
+        sticky.classList.toggle('opacity-0', !show);
+        sticky.classList.toggle('pointer-events-none', !show);
+        raf = null;
+      });
+    }
+    window.addEventListener('scroll', rafToggle, { passive:true });
+    window.addEventListener('resize', rafToggle);
+    rafToggle(); // initial
+
+    // -------- Top scroll progress bar
+    const progressBar = document.querySelector('#progress .bar');
+    let rafPB = null;
+    function updateProgress(){
+      const doc = document.documentElement;
+      const body = document.body;
+      const scrollTop = window.scrollY || doc.scrollTop;
+      const scrollHeight = Math.max(doc.scrollHeight, body.scrollHeight);
+      const max = scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(1, Math.max(0, scrollTop / max)) : 0;
+      progressBar.style.transform = `scaleX(${p})`;
+      rafPB = null;
+    }
+    function onScrollPB(){
+      if(rafPB) return;
+      rafPB = requestAnimationFrame(updateProgress);
+    }
+    window.addEventListener('scroll', onScrollPB, { passive:true });
+    window.addEventListener('resize', onScrollPB);
+    updateProgress(); // initial
   </script>
 </body>
 </html>
+
