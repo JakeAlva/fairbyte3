@@ -89,6 +89,13 @@
     .trace-line.soft{ stroke-width:1.25; opacity:.9; animation-duration: calc(var(--dur, 2.2s) * .85) }
     .trace-line.accent{ stroke-width:2.6; opacity:1; animation-duration: calc(var(--dur, 2.2s) * 1.05) }
 
+    /* Professional stroke styling for traced logo paths */
+    :root{ --logo-stroke:1.9; }
+    @media (min-width: 768px){ :root{ --logo-stroke:2.3; } }
+    @media (min-width: 1280px){ :root{ --logo-stroke:2.7; } }
+    .logo-path{ fill:none !important; stroke:url(#traceGrad); stroke-width:var(--logo-stroke); vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-linejoin:round; stroke-miterlimit:2; stroke-dasharray: var(--len) var(--len); stroke-dashoffset: var(--len); animation: dash 1.6s ease forwards; }
+    .logo-glow{ fill:none !important; stroke:url(#traceGrad); stroke-width:calc(var(--logo-stroke)*2.2); opacity:.22; filter:url(#neonGlow); stroke-linecap:round; stroke-linejoin:round; stroke-dasharray: var(--len) var(--len); stroke-dashoffset: var(--len); animation: dash 1.6s ease forwards; }
+
     /* Traced logo paths injected from external SVG */
     .logo-path{ fill:none !important; stroke:url(#traceGrad); stroke-width:2.2; vector-effect:non-scaling-stroke; filter: drop-shadow(0 0 6px rgba(96,165,250,.55)) drop-shadow(0 0 16px rgba(46,106,214,.45)); stroke-linecap:round; stroke-linejoin:round; stroke-dasharray: var(--len) var(--len); stroke-dashoffset: var(--len); animation: dash 1.6s ease forwards; }
 
@@ -108,6 +115,7 @@
 
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased">
   <!-- Neon Line-Trace Intro (spells FAIRBYTE; tap/click to skip) -->
+  <!-- Neon Line-Trace Intro (precision-traced SVG logo + FAIRBYTE; tap/click to skip) -->
   <div id="trace" class="trace-wrap" aria-label="Intro overlay">
     <svg class="trace-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
       <defs>
@@ -115,27 +123,26 @@
           <stop offset="0%" stop-color="#2e6ad6" />
           <stop offset="100%" stop-color="#60a5fa" />
         </linearGradient>
-        <mask id="revealMask">
-          <rect x="0" y="0" width="100" height="100" fill="black"/>
-          <path id="revealPath" d="M10 50 H10" fill="none" stroke="white" stroke-width="24" stroke-linecap="round">
-            <animate attributeName="d" dur="1.8s" fill="freeze" values="M10 50 H10; M10 50 H90" />
-          </path>
-        </mask>
+        <!-- Stronger, professional neon glow that works inside SVG -->
+        <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2.2" result="b1"/>
+          <feGaussianBlur stdDeviation="5.5" in="b1" result="b2"/>
+          <feMerge>
+            <feMergeNode in="b2"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
       </defs>
+
+      <!-- Subtle brand frame sweep -->
       <path class="trace-line soft" d="M3 6 H97 V94 H3 Z" />
-      <image href="logo.svg" x="15" y="28" width="70" height="44" preserveAspectRatio="xMidYMid meet" style="filter: drop-shadow(0 0 12px rgba(46,106,214,.55)) drop-shadow(0 0 28px rgba(96,165,250,.45));" mask="url(#revealMask)"/>
-      <!-- Inline vector outline injected by JS for true path-by-path tracing -->
-      <g id="logoInline" transform="translate(15,28) scale(0.16)"></g>
-      <g transform="translate(16,30) scale(0.62)">
-        <path class="trace-line accent" d="M6 6 H46 a6 6 0 0 1 6 6 V46 a6 6 0 0 1 -6 6 H6 a6 6 0 0 1 -6 -6 V12 a6 6 0 0 1 6 -6 Z"/>
-        <path class="trace-line" d="M52 26 H64"/>
-        <circle class="trace-line soft" cx="66.5" cy="26" r="2.2"/>
-        <path class="trace-line" d="M52 32 H60"/>
-        <circle class="trace-line soft" cx="62.5" cy="32" r="2.2"/>
-        <path class="trace-line" d="M52 38 H56"/>
-        <circle class="trace-line soft" cx="58.5" cy="38" r="2.2"/>
-      </g>
-      <text id="traceWord" x="50" y="78" text-anchor="middle" dominant-baseline="middle" class="trace-word" font-family="Inter, ui-sans-serif, system-ui" font-weight="900">FAIRBYTE</text>
+
+      <!-- Inline precise logo paths (injected by JS for path-by-path drawing) -->
+      <g id="logoInline" filter="url(#neonGlow)"></g>
+
+      <!-- Brand word under logo -->
+      <text id="traceWord" x="50" y="84" text-anchor="middle" dominant-baseline="middle"
+            class="trace-word" font-family="Inter, ui-sans-serif, system-ui" font-weight="900">FAIRBYTE</text>
     </svg>
     <button class="trace-skip" aria-label="Skip intro">Tap to skip</button>
   </div>
@@ -484,36 +491,57 @@
       const lines = wrap.querySelectorAll('.trace-line');
       const inlineGroup = document.getElementById('logoInline');
 
+      // Fit the external SVG paths into a target box nicely
+      const TARGET = { x: 16, y: 22, w: 68, h: 44 }; // in overlay viewBox units
+
       const setWordLength = () => {
-        try{ const len = word.getComputedTextLength(); word.style.setProperty('--lenWord', len); const base = 1.6; const scale = Math.max(1, Math.min(1.25, window.innerWidth / 1200)); word.style.setProperty('--durWord', (base * scale) + 's'); }
-        catch(e){ word.style.setProperty('--lenWord', 680); word.style.setProperty('--durWord', '1.7s'); }
+        try{ const len = word.getComputedTextLength(); word.style.setProperty('--lenWord', len); const base = 1.5; const scale = Math.max(1, Math.min(1.25, window.innerWidth / 1200)); word.style.setProperty('--durWord', (base * scale) + 's'); }
+        catch(e){ word.style.setProperty('--lenWord', 640); word.style.setProperty('--durWord', '1.6s'); }
       };
 
       const prepLines = () => {
-        lines.forEach((p, i) => { const len = (p.getTotalLength ? p.getTotalLength() : 200); p.style.setProperty('--len', len); p.style.animationDelay = (0.5 + i * 0.06) + 's'; p.style.setProperty('--dur', '1.8s'); });
+        lines.forEach((p, i) => { const len = (p.getTotalLength ? p.getTotalLength() : 200); p.style.setProperty('--len', len); p.style.animationDelay = (0.65 + i * 0.06) + 's'; p.style.setProperty('--dur', '1.7s'); });
       };
 
-      // Load external SVG, inject paths, and animate strokes
-      const injectLogoPaths = async ()=>{
+      async function injectLogoPaths(){
         try{
           const res = await fetch('logo.svg');
           const txt = await res.text();
           const doc = new DOMParser().parseFromString(txt, 'image/svg+xml');
-          const paths = Array.from(doc.querySelectorAll('path'));
-          // Clear
+          const root = doc.documentElement;
+          const vb = root.viewBox && root.viewBox.baseVal ? root.viewBox.baseVal : { x:0, y:0, width:parseFloat(root.getAttribute('width'))||100, height:parseFloat(root.getAttribute('height'))||100 };
+
+          // Collect drawable shapes
+          let nodes = Array.from(doc.querySelectorAll('path'));
+          if(!nodes.length){ nodes = Array.from(doc.querySelectorAll('rect,circle,ellipse,line,polyline,polygon')); }
+
           inlineGroup.innerHTML = '';
-          paths.forEach((p, i)=>{
-            const n = document.importNode(p, true);
-            n.setAttribute('fill','none');
-            n.removeAttribute('style');
-            n.classList.add('logo-path');
-            n.style.animationDelay = (0.2 + i*0.05) + 's';
-            // compute approx length if possible
-            try{ const len = n.getTotalLength(); n.style.setProperty('--len', len); }catch(_){ n.style.setProperty('--len', 300); }
-            inlineGroup.appendChild(n);
+
+          // Compute uniform scale & translation to fit TARGET
+          const scale = Math.min(TARGET.w / vb.width, TARGET.h / vb.height);
+          const tx = TARGET.x + (TARGET.w - vb.width * scale)/2 - vb.x * scale;
+          const ty = TARGET.y + (TARGET.h - vb.height * scale)/2 - vb.y * scale;
+          inlineGroup.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`);
+
+          nodes.forEach((original, i)=>{
+            const p1 = document.importNode(original, true);
+            p1.removeAttribute('style');
+            p1.setAttribute('fill','none');
+            p1.classList.add('logo-path');
+            // soft halo behind
+            const p0 = p1.cloneNode(true); p0.classList.remove('logo-path'); p0.classList.add('logo-glow');
+
+            let L = 300; try{ L = p1.getTotalLength(); }catch(_){ }
+            p1.style.setProperty('--len', L); p0.style.setProperty('--len', L);
+            const delay = 0.12 + i*0.055;
+            p0.style.animationDelay = delay + 's';
+            p1.style.animationDelay = (delay + 0.06) + 's';
+
+            inlineGroup.appendChild(p0);
+            inlineGroup.appendChild(p1);
           });
-        }catch(e){ /* if fetch fails, we still show masked raster */ }
-      };
+        }catch(e){ /* If fetch fails, continue without outline */ }
+      }
 
       const finish = () => { wrap.classList.add('is-done'); };
       const recalc = () => { setWordLength(); prepLines(); };
@@ -522,7 +550,7 @@
       recalc();
       injectLogoPaths();
 
-      const durWord = parseFloat(getComputedStyle(word).getPropertyValue('--durWord')) || 1.7;
+      const durWord = parseFloat(getComputedStyle(word).getPropertyValue('--durWord')) || 1.6;
       const totalMs = (durWord + 1400);
       const timer = setTimeout(finish, totalMs);
       wrap.addEventListener('click', ()=>{ clearTimeout(timer); finish(); });
