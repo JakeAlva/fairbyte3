@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fairbyte — Advanced Web & App Studio</title>
-  <meta name="description" content="Fairbyte builds modern, high-performance websites and apps. We design, develop, and ship with quality and speed.">
-  <link rel="icon" href="logo.png" type="image/png">
+  <meta name="description" content="Fairbyte builds modern, high-performance websites and apps. We design, develop, and ship with quality and speed." />
+  <link rel="icon" href="logo.png" type="image/png" />
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <!-- Tailwind via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -39,87 +39,100 @@
   </script>
 
   <style>
+    /* ---------- Core aesthetic ---------- */
     .glass{backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.65))}
     .dark .glass{background:linear-gradient(180deg,rgba(17,24,39,0.8),rgba(17,24,39,0.5))}
     .mask-fade{-webkit-mask-image:linear-gradient(to bottom,black 70%,transparent);mask-image:linear-gradient(to bottom,black 70%,transparent)}
 
-    /* ---------- Scroll reveal ---------- */
     .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
     .reveal.in{opacity:1;transform:none}
-    @media (prefers-reduced-motion: reduce){
-      .reveal{opacity:1;transform:none;transition:none}
-    }
+    @media (prefers-reduced-motion: reduce){ .reveal{opacity:1;transform:none;transition:none} }
 
-    /* ---------- Fancy work card effects ---------- */
-    .fx-animated-bg{
-      background: linear-gradient(135deg,#0e1e3b 0%,#1e4291 40%,#2e6ad6 60%,#60a5fa 100%);
-      background-size: 200% 200%;
-      animation: fxGradient 10s ease infinite;
-    }
-    @keyframes fxGradient{ 0%{background-position: 0% 50%} 50%{background-position: 100% 50%} 100%{background-position: 0% 50%} }
-    .fx-card:hover .fx-visual{ transform: translateY(-2px) scale(1.01); box-shadow: 0 12px 40px -12px rgba(46,106,214,.6), 0 0 0 1px rgba(255,255,255,.06) inset; }
-    .fx-shimmer:before{
-      content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none;
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.08) 50%, transparent 100%);
-      transform: translateX(-120%); animation: fxShimmer 3.6s ease-in-out infinite;
-    }
+    .fx-animated-bg{ background:linear-gradient(135deg,#0e1e3b 0%,#1e4291 40%,#2e6ad6 60%,#60a5fa 100%); background-size:200% 200%; animation:fxGradient 10s ease infinite; }
+    @keyframes fxGradient{ 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .fx-card:hover .fx-visual{ transform:translateY(-2px) scale(1.01); box-shadow:0 12px 40px -12px rgba(46,106,214,.6), 0 0 0 1px rgba(255,255,255,.06) inset; }
+    .fx-shimmer:before{ content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none; background:linear-gradient(120deg,transparent 0%, rgba(255,255,255,.08) 50%, transparent 100%); transform:translateX(-120%); animation:fxShimmer 3.6s ease-in-out infinite; }
     @keyframes fxShimmer{ 0%{transform:translateX(-120%)} 60%,100%{transform:translateX(120%)} }
 
-    /* Card #1 SVG chart animations */
     .bar{ transform-origin: bottom; animation: grow 1.6s ease forwards; }
-    .bar.d1{animation-delay:.1s} .bar.d2{animation-delay:.25s} .bar.d3{animation-delay:.4s}
-    .bar.d4{animation-delay:.55s} .bar.d5{animation-delay:.7s}
+    .bar.d1{animation-delay:.1s} .bar.d2{animation-delay:.25s} .bar.d3{animation-delay:.4s} .bar.d4{animation-delay:.55s} .bar.d5{animation-delay:.7s}
     @keyframes grow{ from{transform:scaleY(0)} to{transform:scaleY(1)} }
     .line{ stroke-dasharray:560; stroke-dashoffset:560; animation: draw 2s ease .2s forwards; }
     @keyframes draw{ to{ stroke-dashoffset:0 } }
 
-    /* ---------- Card #2: E-commerce product grid animation ---------- */
     .prod-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; padding:14px; }
-    .prod{
-      border-radius:14px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.12);
-      height:64px; transform:translateY(14px) scale(.98); opacity:0;
-      animation:prodIn .7s ease forwards;
-    }
-    .prod.p1{animation-delay:.1s} .prod.p2{animation-delay:.2s} .prod.p3{animation-delay:.3s}
-    .prod.p4{animation-delay:.4s} .prod.p5{animation-delay:.5s} .prod.p6{animation-delay:.6s}
-    .prod.p7{animation-delay:.7s} .prod.p8{animation-delay:.8s} .prod.p9{animation-delay:.9s}
+    .prod{ border-radius:14px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.12); height:64px; transform:translateY(14px) scale(.98); opacity:0; animation:prodIn .7s ease forwards; }
+    .prod.p1{animation-delay:.1s} .prod.p2{animation-delay:.2s} .prod.p3{animation-delay:.3s} .prod.p4{animation-delay:.4s} .prod.p5{animation-delay:.5s} .prod.p6{animation-delay:.6s} .prod.p7{animation-delay:.7s} .prod.p8{animation-delay:.8s} .prod.p9{animation-delay:.9s}
     @keyframes prodIn{ to{ transform:translateY(0) scale(1); opacity:1 } }
-
-    .cta-pill{
-      position:absolute; bottom:14px; left:14px; right:14px; height:34px; border-radius:9999px;
-      display:grid; place-items:center; font-weight:700; font-size:12px; letter-spacing:.2px;
-      color:#0e1e3b; background:linear-gradient(90deg,#fff,#e8f1ff);
-      box-shadow:0 8px 30px -12px rgba(46,106,214,.6);
-      transform:translateY(10px); opacity:0; animation:ctaIn .7s ease 1s forwards;
-    }
+    .cta-pill{ position:absolute; bottom:14px; left:14px; right:14px; height:34px; border-radius:9999px; display:grid; place-items:center; font-weight:700; font-size:12px; letter-spacing:.2px; color:#0e1e3b; background:linear-gradient(90deg,#fff,#e8f1ff); box-shadow:0 8px 30px -12px rgba(46,106,214,.6); transform:translateY(10px); opacity:0; animation:ctaIn .7s ease 1s forwards; }
     @keyframes ctaIn{ to{ transform:translateY(0); opacity:1 } }
 
-    /* ---------- Card #3: Phone mock with auto-scrolling list ---------- */
-    .phone{
-      width:230px; height:420px; border-radius:36px; background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.12); position:relative;
-      box-shadow:0 20px 60px -20px rgba(0,0,0,.5);
-    }
+    .phone{ width:230px; height:420px; border-radius:36px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); position:relative; box-shadow:0 20px 60px -20px rgba(0,0,0,.5); }
     .phone:before{ content:""; position:absolute; top:10px; left:50%; transform:translateX(-50%); width:110px; height:18px; border-radius:10px; background:rgba(255,255,255,.16); }
     .screen{ position:absolute; inset:40px 14px 18px; border-radius:22px; overflow:hidden; background:linear-gradient(180deg,#0e1e3b,#1e4291 40%,#2e6ad6); border:1px solid rgba(255,255,255,.12); }
     .list{ position:absolute; inset:0; padding:14px; display:flex; flex-direction:column; gap:12px; animation:autoScroll 8s linear infinite; }
     .item{ height:56px; border-radius:16px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.12); }
-    @keyframes autoScroll{ 0%{ transform:translateY(0) } 90%{ transform:translateY(-50%) } 100%{ transform:translateY(-50%) } }
+    @keyframes autoScroll{ 0%{ transform:translateY(0) } 90%,100%{ transform:translateY(-50%) } }
 
-    /* ---------- Top scroll progress bar (mobile-robust) ---------- */
     #progress{ position:fixed; top:0; left:0; right:0; height:3px; z-index:60; pointer-events:none; }
-    #progress .bar{
-      height:100%; width:0%;
-      background:linear-gradient(90deg,#2e6ad6,#60a5fa);
-      box-shadow:0 0 8px rgba(46,106,214,.35);
-      will-change: width;
-      transition: width .05s linear;
-    }
+    #progress .bar{ height:100%; width:0%; background:linear-gradient(90deg,#2e6ad6,#60a5fa); box-shadow:0 0 8px rgba(46,106,214,.35); will-change: width; transition: width .05s linear; }
     .dark #progress .bar{ box-shadow:0 0 8px rgba(96,165,250,.35); }
+
+    /* ===============================
+       NEON LINE-TRACE INTRO (SVG)
+       =============================== */
+    .trace-wrap{ position:fixed; inset:0; z-index:9999; background:radial-gradient(1200px 600px at 50% 40%, rgba(21,44,91,.55), rgba(14,30,59,.92) 60%, rgba(0,0,0,.98)); display:grid; place-items:center; transition:opacity .6s ease, visibility .6s ease; opacity:1; visibility:visible; cursor:pointer; }
+    .trace-wrap.is-done{ opacity:0; visibility:hidden; }
+    .trace-svg{ width:100vw; height:100vh; mix-blend-mode:screen; }
+
+    .trace-line{ fill:none; stroke:url(#traceGrad); stroke-width:2; filter: drop-shadow(0 0 6px rgba(96,165,250,.55)) drop-shadow(0 0 16px rgba(46,106,214,.45)); stroke-linecap:round; stroke-linejoin:round; stroke-dasharray: var(--len) var(--len); stroke-dashoffset: var(--len); animation: dash var(--dur, 2.2s) ease forwards; vector-effect: non-scaling-stroke; }
+    .trace-line.soft{ stroke-width:1.25; opacity:.9; animation-duration: calc(var(--dur, 2.2s) * .85) }
+    .trace-line.accent{ stroke-width:2.6; opacity:1; animation-duration: calc(var(--dur, 2.2s) * 1.05) }
+
+    .trace-word{ fill:none; stroke:url(#traceGrad); stroke-width:3; paint-order: stroke; filter: drop-shadow(0 0 10px rgba(96,165,250,.7)) drop-shadow(0 0 22px rgba(46,106,214,.45)); letter-spacing: .6px; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray: var(--lenWord) var(--lenWord); stroke-dashoffset: var(--lenWord); animation: dash var(--durWord, 1.9s) ease forwards; vector-effect: non-scaling-stroke; }
+
+    @keyframes dash{ to{ stroke-dashoffset:0 } }
+
+    .trace-skip{ position:absolute; bottom:24px; left:50%; transform:translateX(-50%); padding:.5rem .9rem; border-radius:9999px; font-size:12px; font-weight:700; letter-spacing:.3px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:#e7f2ff; text-shadow:0 0 8px rgba(96,165,250,.4); backdrop-filter: blur(6px); }
+    @media (prefers-reduced-motion: reduce){ .trace-wrap{ display:none !important; } }
+
+    /* Responsive SVG text sizing */
+    @media (max-width: 480px){ #traceWord{ font-size: 16px; } }
+    @media (min-width: 481px) and (max-width: 768px){ #traceWord{ font-size: 22px; } }
+    @media (min-width: 769px){ #traceWord{ font-size: 28px; } }
   </style>
 </head>
 
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased">
+  <!-- Neon Line-Trace Intro (spells FAIRBYTE; tap/click to skip) -->
+  <div id="trace" class="trace-wrap" aria-label="Intro overlay">
+    <svg class="trace-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="traceGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#2e6ad6" />
+          <stop offset="100%" stop-color="#60a5fa" />
+        </linearGradient>
+      </defs>
+
+      <!-- Frame sweep (subtle) -->
+      <path class="trace-line soft" d="M3 6 H97 V94 H3 Z" />
+
+      <!-- The word -->
+      <text id="traceWord"
+            x="50" y="50"
+            text-anchor="middle" dominant-baseline="middle"
+            class="trace-word"
+            font-family="Inter, ui-sans-serif, system-ui"
+            font-weight="900">FAIRBYTE</text>
+
+      <!-- Accent underlines that finish after the word -->
+      <path class="trace-line accent" d="M20 64 H80" />
+      <path class="trace-line soft"   d="M26 69 H74" />
+    </svg>
+
+    <button class="trace-skip" aria-label="Skip intro">Tap to skip</button>
+  </div>
+
   <!-- Top scroll progress -->
   <div id="progress" aria-hidden="true"><div class="bar"></div></div>
 
@@ -160,12 +173,8 @@
             <span class="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
             Now booking October builds
           </div>
-          <h1 class="text-4xl font-black tracking-tight sm:text-6xl">
-            Websites & apps that feel <span class="bg-gradient-to-r from-brand-600 via-indigo-500 to-sky-400 bg-clip-text text-transparent">fast, premium, and alive</span>.
-          </h1>
-          <p class="mt-5 max-w-xl text-lg text-slate-600 dark:text-slate-300">
-            Fairbyte ships modern products—crafted UIs, robust backends, and clean devops. Built to scale, delightful to use.
-          </p>
+          <h1 class="text-4xl font-black tracking-tight sm:text-6xl">Websites & apps that feel <span class="bg-gradient-to-r from-brand-600 via-indigo-500 to-sky-400 bg-clip-text text-transparent">fast, premium, and alive</span>.</h1>
+          <p class="mt-5 max-w-xl text-lg text-slate-600 dark:text-slate-300">Fairbyte ships modern products—crafted UIs, robust backends, and clean devops. Built to scale, delightful to use.</p>
           <div class="mt-8 flex flex-wrap gap-3">
             <a href="#work" class="rounded-xl bg-slate-900 px-5 py-3 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200">See our work</a>
             <a href="#contact" class="rounded-xl border border-slate-300 px-5 py-3 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-900">Start a project</a>
@@ -200,7 +209,7 @@
                 <div class="h-3 w-3 rounded-full bg-emerald-400"></div>
                 <span class="ml-auto">/apps/quote.tsx</span>
               </div>
-              <pre class="mt-4 overflow-auto rounded-xl bg-slate-950/70 p-4 text-[11px] leading-relaxed ring-1 ring-white/10"><code>const Quote = () =&gt; (
+<pre class="mt-4 overflow-auto rounded-xl bg-slate-950/70 p-4 text-[11px] leading-relaxed ring-1 ring-white/10"><code>const Quote = () =&gt; (
   &lt;form className="grid grid-cols-1 gap-3 sm:grid-cols-2"&gt;
     &lt;input placeholder="Name" className="input" /&gt;
     &lt;input placeholder="Email" className="input" /&gt;
@@ -250,8 +259,7 @@
                 <rect class="bar d4" x="360" y="160" width="36" height="180" rx="6"/>
                 <rect class="bar d5" x="440" y="90"  width="36" height="250" rx="6"/>
               </g>
-              <path class="line" d="M120 310 C170 260, 210 230, 280 200 S 400 150, 440 130"
-                    fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+              <path class="line" d="M120 310 C170 260, 210 230, 280 200 S 400 150, 440 130" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".85"/>
               <defs>
                 <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stop-color="rgba(255,255,255,.9)"/>
@@ -355,21 +363,9 @@
     <div class="mx-auto max-w-7xl px-6">
       <h2 class="reveal text-2xl sm:text-3xl font-extrabold">Simple, honest pricing</h2>
       <div class="mt-8 grid gap-6 md:grid-cols-3">
-        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900">
-          <div class="text-sm font-semibold text-brand-600">Starter</div>
-          <div class="mt-3 text-3xl font-black">$2k–$5k</div>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Landing pages & marketing sites.</p>
-        </div>
-        <div class="reveal rounded-2xl border border-brand-600 bg-gradient-to-b from-white to-brand-50 p-6 shadow-glow dark:from-slate-900 dark:to-slate-900/40" style="transition-delay:.08s">
-          <div class="text-sm font-semibold text-brand-600">Growth</div>
-          <div class="mt-3 text-3xl font-black">$8k–$20k</div>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Web apps, dashboards, subscriptions.</p>
-        </div>
-        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900" style="transition-delay:.16s">
-          <div class="text-sm font-semibold text-brand-600">Scale</div>
-          <div class="mt-3 text-3xl font-black">Custom</div>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Mobile, complex systems, integrations.</p>
-        </div>
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900"> <div class="text-sm font-semibold text-brand-600">Starter</div> <div class="mt-3 text-3xl font-black">$2k–$5k</div> <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Landing pages & marketing sites.</p> </div>
+        <div class="reveal rounded-2xl border border-brand-600 bg-gradient-to-b from-white to-brand-50 p-6 shadow-glow dark:from-slate-900 dark:to-slate-900/40" style="transition-delay:.08s"> <div class="text-sm font-semibold text-brand-600">Growth</div> <div class="mt-3 text-3xl font-black">$8k–$20k</div> <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Web apps, dashboards, subscriptions.</p> </div>
+        <div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 shadow-lg dark:border-slate-800/80 dark:bg-slate-900" style="transition-delay:.16s"> <div class="text-sm font-semibold text-brand-600">Scale</div> <div class="mt-3 text-3xl font-black">Custom</div> <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Mobile, complex systems, integrations.</p> </div>
       </div>
       <p class="reveal mt-6 text-sm text-slate-500">Need something specific? We’ll scope it fast and fairly.</p>
     </div>
@@ -384,14 +380,13 @@
           <h2 class="text-2xl font-extrabold">Tell us about your project</h2>
         </div>
 
-        <!-- Netlify form -->
         <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success.html" class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <input type="hidden" name="form-name" value="contact">
+          <input type="hidden" name="form-name" value="contact" />
           <p class="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
 
-          <input required placeholder="Name" name="name" class="rounded-xl border border-slate-300 bg-white/70 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 dark:border-slate-700 dark:bg-slate-900">
-          <input required placeholder="Email" type="email" name="email" class="rounded-xl border border-slate-300 bg-white/70 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 dark:border-slate-700 dark:bg-slate-900">
-          <input placeholder="Company" name="company" class="rounded-xl border border-slate-300 bg-white/70 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 dark:border-slate-700 dark:bg-slate-900 sm:col-span-2">
+          <input required placeholder="Name" name="name" class="rounded-xl border border-slate-300 bg-white/70 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 dark:border-slate-700 dark:bg-slate-900" />
+          <input required placeholder="Email" type="email" name="email" class="rounded-xl border border-slate-300 bg-white/70 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 dark:border-slate-700 dark:bg-slate-900" />
+          <input placeholder="Company" name="company" class="rounded-xl border border-slate-300 bg-white/70 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 dark:border-slate-700 dark:bg-slate-900 sm:col-span-2" />
           <textarea placeholder="What do you want to build?" name="details" class="rounded-xl border border-slate-300 bg-white/70 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 dark:border-slate-700 dark:bg-slate-900 sm:col-span-2 h-32"></textarea>
           <button class="rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-glow hover:bg-brand-700 sm:w-max">Request estimate</button>
         </form>
@@ -426,101 +421,100 @@
   <script>
     // Theme toggle
     const themeBtn = document.getElementById('themeToggle');
-    function setTheme(mode){ document.documentElement.classList.toggle('dark', mode==='dark'); localStorage.setItem('theme', mode); themeBtn.textContent = mode==='dark' ? 'Light' : 'Dark'; }
-    themeBtn.addEventListener('click', ()=> setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
+    function setTheme(mode){ document.documentElement.classList.toggle('dark', mode==='dark'); localStorage.setItem('theme', mode); if(themeBtn) themeBtn.textContent = mode==='dark' ? 'Light' : 'Dark'; }
+    themeBtn?.addEventListener('click', ()=> setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
     const saved = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); setTheme(saved);
 
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // Hero particles (lightweight)
-    const canvas = document.getElementById('particles'); const ctx = canvas.getContext('2d'); let w,h,pxRatio, dots=[];
-    function resize(){ pxRatio = devicePixelRatio || 1; w = canvas.width = innerWidth*pxRatio; h = canvas.height = Math.max(500, innerHeight*0.9)*pxRatio; canvas.style.width = innerWidth + 'px'; canvas.style.height = Math.max(500, innerHeight*0.9) + 'px'; }
-    addEventListener('resize', resize); resize();
-    for(let i=0;i<120;i++){ dots.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,r:Math.random()*2*pxRatio}); }
-    (function tick(){ ctx.clearRect(0,0,w,h); const linkDist=120*pxRatio;
-      for(const d of dots){ d.x+=d.vx; d.y+=d.vy; if(d.x<0||d.x>w) d.vx*=-1; if(d.y<0||d.y>h) d.vy*=-1; ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,Math.PI*2); ctx.fillStyle='rgba(46,106,214,0.45)'; ctx.fill(); }
-      for(let i=0;i<dots.length;i++){ for(let j=i+1;j<dots.length;j++){ const a=dots[i], b=dots[j]; const dx=a.x-b.x, dy=a.y-b.y; const dist=Math.hypot(dx,dy); if(dist<linkDist){ ctx.strokeStyle='rgba(46,106,214,'+(1-dist/linkDist)*0.25+')'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); } } }
+    const canvasP = document.getElementById('particles'); const ctxP = canvasP.getContext('2d'); let wP,hP,pxP,dots=[];
+    function resizeP(){ pxP = devicePixelRatio || 1; wP = canvasP.width = innerWidth*pxP; hP = canvasP.height = Math.max(500, innerHeight*0.9)*pxP; canvasP.style.width = innerWidth + 'px'; canvasP.style.height = Math.max(500, innerHeight*0.9) + 'px'; }
+    addEventListener('resize', resizeP); resizeP();
+    for(let i=0;i<120;i++){ dots.push({x:Math.random()*wP,y:Math.random()*hP,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,r:Math.random()*2*pxP}); }
+    (function tick(){ ctxP.clearRect(0,0,wP,hP); const L=120*pxP;
+      for(const d of dots){ d.x+=d.vx; d.y+=d.vy; if(d.x<0||d.x>wP) d.vx*=-1; if(d.y<0||d.y>hP) d.vy*=-1; ctxP.beginPath(); ctxP.arc(d.x,d.y,d.r,0,Math.PI*2); ctxP.fillStyle='rgba(46,106,214,0.45)'; ctxP.fill(); }
+      for(let i=0;i<dots.length;i++){ for(let j=i+1;j<dots.length;j++){ const a=dots[i], b=dots[j]; const dx=a.x-b.x, dy=a.y-b.y; const dist=Math.hypot(dx,dy); if(dist<L){ ctxP.strokeStyle='rgba(46,106,214,'+(1-dist/L)*0.25+')'; ctxP.lineWidth=1; ctxP.beginPath(); ctxP.moveTo(a.x,a.y); ctxP.lineTo(b.x,b.y); ctxP.stroke(); } } }
       requestAnimationFrame(tick);
     })();
 
-    // -------- Scroll reveal (IntersectionObserver)
+    // Scroll reveal
     const revealEls = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries)=>{
-      for(const e of entries){
-        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-      }
-    }, { threshold: .12, rootMargin: "0px 0px -10% 0px" });
+    const io = new IntersectionObserver((entries)=>{ for(const e of entries){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } } }, { threshold:.12, rootMargin:"0px 0px -10% 0px" });
     revealEls.forEach(el=> io.observe(el));
 
-    // -------- Sticky mobile CTA (shows after 50% scroll, hides when #contact visible)
+    // Sticky mobile CTA
     const sticky = document.getElementById('stickyCta');
     let contactInView = false;
     const contactSec = document.getElementById('contact');
-    const ioContact = new IntersectionObserver((entries)=>{
-      contactInView = entries[0].isIntersecting;
-      rafToggle();
-    }, { threshold: .2 });
-    ioContact.observe(contactSec);
+    const ioContact = new IntersectionObserver((entries)=>{ contactInView = entries[0].isIntersecting; rafToggle(); }, { threshold:.2 }); ioContact.observe(contactSec);
+    function getViewportHeight(){ return (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight || document.documentElement.clientHeight; }
+    function computeShow(){ const el = document.scrollingElement || document.documentElement; const viewport = getViewportHeight(); const scrollable = Math.max(0, el.scrollHeight - viewport); const pastHalf = el.scrollTop > scrollable * 0.5; return pastHalf && !contactInView; }
+    let rafS = null; function rafToggle(){ if(rafS) return; rafS = requestAnimationFrame(()=>{ const show = computeShow(); sticky.classList.toggle('translate-y-full', !show); sticky.classList.toggle('opacity-0', !show); sticky.classList.toggle('pointer-events-none', !show); rafS = null; }); }
+    window.addEventListener('scroll', rafToggle, { passive:true }); window.addEventListener('resize', rafToggle); window.addEventListener('orientationchange', rafToggle);
+    if (window.visualViewport){ visualViewport.addEventListener('resize', rafToggle); visualViewport.addEventListener('scroll', rafToggle); }
+    rafToggle();
 
-    function computeShow(){
-      const el = document.scrollingElement || document.documentElement;
-      const viewport = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight || document.documentElement.clientHeight;
-      const scrollable = Math.max(0, el.scrollHeight - viewport);
-      const pastHalf = el.scrollTop > scrollable * 0.5;
-      return pastHalf && !contactInView;
-    }
-
-    let raf = null;
-    function rafToggle(){
-      if(raf) return;
-      raf = requestAnimationFrame(()=>{
-        const show = computeShow();
-        sticky.classList.toggle('translate-y-full', !show);
-        sticky.classList.toggle('opacity-0', !show);
-        sticky.classList.toggle('pointer-events-none', !show);
-        raf = null;
-      });
-    }
-    window.addEventListener('scroll', rafToggle, { passive:true });
-    window.addEventListener('resize', rafToggle);
-    window.addEventListener('orientationchange', rafToggle);
-    if (window.visualViewport){
-      visualViewport.addEventListener('resize', rafToggle);
-      visualViewport.addEventListener('scroll', rafToggle);
-    }
-    rafToggle(); // initial
-
-    // -------- Top scroll progress bar (mobile-robust)
+    // Top scroll progress (mobile-robust)
     const progressBar = document.querySelector('#progress .bar');
     const scroller = document.scrollingElement || document.documentElement;
+    let rafPB = null; function updateProgress(){ const max = Math.max(0, (scroller.scrollHeight || document.body.scrollHeight) - getViewportHeight()); const p = max > 0 ? Math.min(1, Math.max(0, scroller.scrollTop / max)) : 0; progressBar.style.width = (p * 100) + '%'; }
+    function queuePB(){ if(rafPB) return; rafPB = requestAnimationFrame(()=>{ updateProgress(); rafPB = null; }); }
+    window.addEventListener('scroll', queuePB, { passive:true }); window.addEventListener('resize', queuePB); window.addEventListener('orientationchange', queuePB);
+    if (window.visualViewport){ visualViewport.addEventListener('resize', queuePB); visualViewport.addEventListener('scroll', queuePB); }
+    updateProgress();
 
-    function getViewportHeight(){
-      return (window.visualViewport && window.visualViewport.height)
-        ? window.visualViewport.height
-        : window.innerHeight || document.documentElement.clientHeight;
-    }
+    /* ==================================
+       NEON LINE-TRACE INTRO controller
+       ================================== */
+    (function(){
+      const wrap = document.getElementById('trace');
+      if (!wrap) return;
 
-    function updateProgress(){
-      const max = Math.max(0, (scroller.scrollHeight || document.body.scrollHeight) - getViewportHeight());
-      const p = max > 0 ? Math.min(1, Math.max(0, scroller.scrollTop / max)) : 0;
-      progressBar.style.width = (p * 100) + '%';
-    }
+      if (sessionStorage.getItem('fb_trace_seen') === '1' || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        wrap.classList.add('is-done');
+        return;
+      }
 
-    let rafPB = null;
-    function queuePB(){
-      if(rafPB) return;
-      rafPB = requestAnimationFrame(()=>{ updateProgress(); rafPB = null; });
-    }
+      const word = document.getElementById('traceWord');
+      const lines = wrap.querySelectorAll('.trace-line');
 
-    window.addEventListener('scroll', queuePB, { passive:true });
-    window.addEventListener('resize', queuePB);
-    window.addEventListener('orientationchange', queuePB);
-    if (window.visualViewport){
-      visualViewport.addEventListener('resize', queuePB);
-      visualViewport.addEventListener('scroll', queuePB);
-    }
-    updateProgress(); // initial paint
+      const setWordLength = () => {
+        try{
+          const len = word.getComputedTextLength();
+          word.style.setProperty('--lenWord', len);
+          const base = 1.8; // seconds
+          const scale = Math.max(1, Math.min(1.25, window.innerWidth / 1200));
+          word.style.setProperty('--durWord', (base * scale) + 's');
+        }catch(e){
+          word.style.setProperty('--lenWord', 800);
+          word.style.setProperty('--durWord', '1.9s');
+        }
+      };
+
+      const prepLines = () => {
+        const durWord = parseFloat(getComputedStyle(word).getPropertyValue('--durWord')) || 1.9;
+        lines.forEach((p, i) => {
+          const len = p.getTotalLength();
+          p.style.setProperty('--len', len);
+          p.style.animationDelay = (durWord * 0.6 + i * 0.05) + 's';
+          p.style.setProperty('--dur', '2.0s');
+        });
+      };
+
+      const finish = () => { wrap.classList.add('is-done'); sessionStorage.setItem('fb_trace_seen', '1'); };
+      const recalc = () => { setWordLength(); prepLines(); };
+
+      window.addEventListener('resize', recalc);
+      recalc();
+
+      const durWord = parseFloat(getComputedStyle(word).getPropertyValue('--durWord')) || 1.9;
+      const totalMs = (durWord * 1.2 + lines.length * 0.05 + 0.5) * 1000;
+      const timer = setTimeout(finish, totalMs);
+      wrap.addEventListener('click', ()=>{ clearTimeout(timer); finish(); });
+      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ clearTimeout(timer); finish(); } });
+    })();
   </script>
 </body>
 </html>
