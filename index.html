@@ -106,30 +106,32 @@
 <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased">
   <!-- Neon Line-Trace Intro (spells FAIRBYTE; tap/click to skip) -->
   <div id="trace" class="trace-wrap" aria-label="Intro overlay">
-    <svg class="trace-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <svg class="trace-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
       <defs>
         <linearGradient id="traceGrad" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stop-color="#2e6ad6" />
           <stop offset="100%" stop-color="#60a5fa" />
         </linearGradient>
+        <mask id="revealMask">
+          <rect x="0" y="0" width="100" height="100" fill="black"/>
+          <path id="revealPath" d="M10 50 H10" fill="none" stroke="white" stroke-width="24" stroke-linecap="round">
+            <animate attributeName="d" dur="1.8s" fill="freeze" values="M10 50 H10; M10 50 H90" />
+          </path>
+        </mask>
       </defs>
-
-      <!-- Frame sweep (subtle) -->
       <path class="trace-line soft" d="M3 6 H97 V94 H3 Z" />
-
-      <!-- The word -->
-      <text id="traceWord"
-            x="50" y="50"
-            text-anchor="middle" dominant-baseline="middle"
-            class="trace-word"
-            font-family="Inter, ui-sans-serif, system-ui"
-            font-weight="900">FAIRBYTE</text>
-
-      <!-- Accent underlines that finish after the word -->
-      <path class="trace-line accent" d="M20 64 H80" />
-      <path class="trace-line soft"   d="M26 69 H74" />
+      <image href="logo.png" x="15" y="28" width="70" height="44" preserveAspectRatio="xMidYMid meet" style="filter: drop-shadow(0 0 12px rgba(46,106,214,.55)) drop-shadow(0 0 28px rgba(96,165,250,.45));" mask="url(#revealMask)"/>
+      <g transform="translate(16,30) scale(0.62)">
+        <path class="trace-line accent" d="M6 6 H46 a6 6 0 0 1 6 6 V46 a6 6 0 0 1 -6 6 H6 a6 6 0 0 1 -6 -6 V12 a6 6 0 0 1 6 -6 Z"/>
+        <path class="trace-line" d="M52 26 H64"/>
+        <circle class="trace-line soft" cx="66.5" cy="26" r="2.2"/>
+        <path class="trace-line" d="M52 32 H60"/>
+        <circle class="trace-line soft" cx="62.5" cy="32" r="2.2"/>
+        <path class="trace-line" d="M52 38 H56"/>
+        <circle class="trace-line soft" cx="58.5" cy="38" r="2.2"/>
+      </g>
+      <text id="traceWord" x="50" y="78" text-anchor="middle" dominant-baseline="middle" class="trace-word" font-family="Inter, ui-sans-serif, system-ui" font-weight="900">FAIRBYTE</text>
     </svg>
-
     <button class="trace-skip" aria-label="Skip intro">Tap to skip</button>
   </div>
 
@@ -472,7 +474,7 @@
       const wrap = document.getElementById('trace');
       if (!wrap) return;
 
-      if (sessionStorage.getItem('fb_trace_seen') === '1' || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
         wrap.classList.add('is-done');
         return;
       }
@@ -503,7 +505,7 @@
         });
       };
 
-      const finish = () => { wrap.classList.add('is-done'); sessionStorage.setItem('fb_trace_seen', '1'); };
+      const finish = () => { wrap.classList.add('is-done');  };
       const recalc = () => { setWordLength(); prepLines(); };
 
       window.addEventListener('resize', recalc);
@@ -518,4 +520,3 @@
   </script>
 </body>
 </html>
-
